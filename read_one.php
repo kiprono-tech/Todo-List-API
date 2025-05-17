@@ -25,9 +25,9 @@ if ($todo->item != null) {
         'id' => $todo->id,
         'item' => $todo->item,
         'sort' => $todo->sort,
-        'todoStatu' => $todo->todoStatu,
+        'todoStatus' => $todo->todoStatus,
         'addDate' => $todo->addDate,
-        'completDate' => $todo->completDate,
+        'completeDate' => $todo->completeDate,
     );
 } else {
     $output["status"] = 200;

@@ -32,9 +32,9 @@ CREATE TABLE `todo` (
   `id` int(11) NOT NULL,
   `item` varchar(255) NOT NULL,
   `sort` int(11) NOT NULL,
-  `todoStatu` tinyint(2) NOT NULL,
+  `todoStatus` tinyint(2) NOT NULL,
   `addDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `completDate` datetime NOT NULL
+  `completeDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

@@ -13,9 +13,9 @@ class Todo
     public $id;
     public $item;
     public $sort;
-    public $todoStatu;
+    public $todoStatus;
     public $addDate;
-    public $completDate;
+    public $completeDate;
     public $from;
     public $to;
     public $PosFrom;
@@ -31,7 +31,7 @@ class Todo
     public function getUncompleted()
     {
         // Create query
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE  todoStatu=1 ORDER BY sort ASC  ';
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE  todoStatus=1 ORDER BY sort ASC  ';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -46,7 +46,7 @@ class Todo
     public function getCompleted()
     {
         // Create query
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE  todoStatu=2  ORDER BY sort ASC  ';
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE  todoStatus=2  ORDER BY sort ASC  ';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -79,9 +79,9 @@ class Todo
         // Set properties
         $this->item = $row['item'];
         $this->sort = $row['sort'];
-        $this->todoStatu = $row['todoStatu'];
+        $this->todoStatus = $row['todoStatus'];
         $this->addDate = $row['addDate'];
-        $this->completDate = $row['completDate'];
+        $this->completeDate = $row['completeDate'];
     }
 
     // Create Task
@@ -89,7 +89,7 @@ class Todo
     {
         // Create query
         if (!empty($this->item)) {
-            $query = 'UPDATE ' . $this->table . ' SET sort = sort+1 WHERE todoStatu = 1';
+            $query = 'UPDATE ' . $this->table . ' SET sort = sort+1 WHERE todoStatus = 1';
 
             // Prepare statement
             $stmtUpdate = $this->conn->prepare($query);
@@ -97,7 +97,7 @@ class Todo
             // Execute query
             if ($stmtUpdate->execute()) {
                 // Create query
-                $query = 'INSERT INTO ' . $this->table . ' SET item = :item, todoStatu = :todoStatu, sort = :sort';
+                $query = 'INSERT INTO ' . $this->table . ' SET item = :item, todoStatus = :todoStatus, sort = :sort';
 
                 // Prepare statement
                 $stmt = $this->conn->prepare($query);
@@ -105,12 +105,12 @@ class Todo
                 // Clean data
                 $this->item = filter_var($this->item, FILTER_SANITIZE_STRING);
                 $this->sort = filter_var(1, FILTER_SANITIZE_NUMBER_INT);
-                $this->todoStatu = filter_var(1, FILTER_SANITIZE_NUMBER_INT);
+                $this->todoStatus = filter_var(1, FILTER_SANITIZE_NUMBER_INT);
 
                 // Bind data
                 $stmt->bindParam(':item', $this->item);
                 $stmt->bindParam(':sort', $this->sort);
-                $stmt->bindParam(':todoStatu', $this->todoStatu);
+                $stmt->bindParam(':todoStatus', $this->todoStatus);
                 if ($stmt->execute()) {
                     return true;
                 }
@@ -160,18 +160,18 @@ class Todo
         // Execute query
         if ($stmtFind->execute() and $stmtFind->rowCount() > 0) {
             // Create query
-            $query = 'UPDATE  ' . $this->table . ' SET sort = sort - 1 WHERE todoStatu = :todoStatu AND sort > :sort ';
+            $query = 'UPDATE  ' . $this->table . ' SET sort = sort - 1 WHERE todoStatus = :todoStatus AND sort > :sort ';
 
             // Prepare statement
             $stmtUpdate = $this->conn->prepare($query);
 
             // Clean data
             $this->sort = filter_var($this->sort, FILTER_SANITIZE_NUMBER_INT);
-            $this->todoStatu = filter_var($this->todoStatu, FILTER_SANITIZE_NUMBER_INT);
+            $this->todoStatus = filter_var($this->todoStatus, FILTER_SANITIZE_NUMBER_INT);
 
             // Bind data
             $stmtUpdate->bindParam(':sort', $this->sort);
-            $stmtUpdate->bindParam(':todoStatu', $this->todoStatu);
+            $stmtUpdate->bindParam(':todoStatus', $this->todoStatus);
 
             // Execute query
             if ($stmtUpdate->execute()) {
@@ -202,16 +202,16 @@ class Todo
 
     public function markAsCompleted()
     {
-        $query = 'UPDATE ' . $this->table . ' SET sort = sort +1 WHERE todoStatu= :todoStatu';
+        $query = 'UPDATE ' . $this->table . ' SET sort = sort +1 WHERE todoStatus= :todoStatus';
         // Prepare statement
         $stmt = $this->conn->prepare($query);
         // Clean data
-        $this->todoStatu = filter_var($this->todoStatu, FILTER_SANITIZE_NUMBER_INT);
+        $this->todoStatus = filter_var($this->todoStatus, FILTER_SANITIZE_NUMBER_INT);
         // Bind data
-        $stmt->bindParam(':todoStatu', $this->todoStatu);
+        $stmt->bindParam(':todoStatus', $this->todoStatus);
         if ($stmt->execute()) {
             // Create query
-            $query = 'UPDATE ' . $this->table . ' SET sort = sort - 1 WHERE sort > :sort and todoStatu = 1';
+            $query = 'UPDATE ' . $this->table . ' SET sort = sort - 1 WHERE sort > :sort and todoStatus = 1';
             // Prepare statement
             $stmt = $this->conn->prepare($query);
             // Clean data
@@ -219,17 +219,17 @@ class Todo
             // Bind data
             $stmt->bindParam(':sort', $this->sort);
             if ($stmt->execute()) {
-                $query = 'UPDATE  ' . $this->table . ' SET sort=1,todoStatu=:todoStatu,completDate=:completDate WHERE id=:id';
+                $query = 'UPDATE  ' . $this->table . ' SET sort=1,todoStatus=:todoStatus,completeDate=:completeDate WHERE id=:id';
                 // Prepare statement
                 $stmt = $this->conn->prepare($query);
                 // Clean data
                 $this->id = filter_var($this->id, FILTER_SANITIZE_NUMBER_INT);
-                $this->todoStatu = filter_var($this->todoStatu, FILTER_SANITIZE_NUMBER_INT);
-                $this->completDate = date("Y-m-d H:i:s");
+                $this->todoStatus = filter_var($this->todoStatus, FILTER_SANITIZE_NUMBER_INT);
+                $this->completeDate = date("Y-m-d H:i:s");
                 // Bind data
                 $stmt->bindParam(':id', $this->id);
-                $stmt->bindParam(':todoStatu', $this->todoStatu);
-                $stmt->bindParam(':completDate', $this->completDate);
+                $stmt->bindParam(':todoStatus', $this->todoStatus);
+                $stmt->bindParam(':completeDate', $this->completeDate);
                 if ($stmt->execute()) {
                     return true;
                 }
@@ -242,16 +242,16 @@ class Todo
 
     public function markAsUncompleted()
     {
-        $query = 'UPDATE ' . $this->table . ' SET sort = sort +1 WHERE todoStatu= :todoStatu';
+        $query = 'UPDATE ' . $this->table . ' SET sort = sort +1 WHERE todoStatus= :todoStatus';
         // Prepare statement
         $stmt = $this->conn->prepare($query);
         // Clean data
-        $this->todoStatu = filter_var($this->todoStatu, FILTER_SANITIZE_NUMBER_INT);
+        $this->todoStatus = filter_var($this->todoStatus, FILTER_SANITIZE_NUMBER_INT);
         // Bind data
-        $stmt->bindParam(':todoStatu', $this->todoStatu);
+        $stmt->bindParam(':todoStatus', $this->todoStatus);
         if ($stmt->execute()) {
             // Create query
-            $query = 'UPDATE ' . $this->table . ' SET sort = sort - 1 WHERE sort > :sort and todoStatu = 2';
+            $query = 'UPDATE ' . $this->table . ' SET sort = sort - 1 WHERE sort > :sort and todoStatus = 2';
             // Prepare statement
             $stmt = $this->conn->prepare($query);
             // Clean data
@@ -259,17 +259,17 @@ class Todo
             // Bind data
             $stmt->bindParam(':sort', $this->sort);
             if ($stmt->execute()) {
-                $query = 'UPDATE  ' . $this->table . ' SET sort=1,todoStatu=:todoStatu,completDate=:completDate WHERE id=:id';
+                $query = 'UPDATE  ' . $this->table . ' SET sort=1,todoStatus=:todoStatus,completeDate=:completeDate WHERE id=:id';
                 // Prepare statement
                 $stmt = $this->conn->prepare($query);
                 // Clean data
                 $this->id = filter_var($this->id, FILTER_SANITIZE_NUMBER_INT);
-                $this->todoStatu = filter_var($this->todoStatu, FILTER_SANITIZE_NUMBER_INT);
-                $this->completDate = '0000-00-00 00:00:00';
+                $this->todoStatus = filter_var($this->todoStatus, FILTER_SANITIZE_NUMBER_INT);
+                $this->completeDate = '0000-00-00 00:00:00';
                 // Bind data
                 $stmt->bindParam(':id', $this->id);
-                $stmt->bindParam(':todoStatu', $this->todoStatu);
-                $stmt->bindParam(':completDate', $this->completDate);
+                $stmt->bindParam(':todoStatus', $this->todoStatus);
+                $stmt->bindParam(':completeDate', $this->completeDate);
                 if ($stmt->execute()) {
                     return true;
                 }

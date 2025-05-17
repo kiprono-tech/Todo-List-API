@@ -20,7 +20,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 // Set ID to update
 $todo->id = $data->id;
-$todo->todoStatu = $data->type;
+$todo->todoStatus = $data->type;
 $todo->sort = $data->sort;
 
 // Delete Task

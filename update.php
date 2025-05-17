@@ -31,7 +31,7 @@ if (isset($data->id) AND isset($data->item)) {
 } elseif (isset($data->id) AND isset($data->sort) AND isset($data->type)) {
     $todo->id = $data->id;
     $todo->sort = $data->sort;
-    $todo->todoStatu = $data->type;
+    $todo->todoStatus = $data->type;
     // Update post
     if ($data->type == 1) {
         if ($todo->markAsUncompleted()) {

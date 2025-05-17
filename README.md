@@ -48,9 +48,9 @@ todo
  id
  item
  sort
- todoStatu
+ todoStatus
  addDate
- completDate
+ completeDate
  ```
 
 The CRUD + List operations below act on this table.
@@ -92,9 +92,9 @@ Where "1" is the value of the primary key of the record that you want to read. I
 "id": 1,
 "item": "Learn PHP",
 "sort": "1",
-"todoStatu": "1",
+"todoStatus": "1",
 "addDate": "2018-09-06 16:07:38",
-"completDate": "0000-00-00 00:00:00"
+"completeDate": "0000-00-00 00:00:00"
 }
 ```
 
@@ -232,9 +232,9 @@ It will return:
       "id": "2",
        "item": "Learn React js",
        "sort": "1",
-       "todoStatu": "1",
+       "todoStatus": "1",
        "addDate": "2018-09-07 22:29:26",
-       "completDate": "0000-00-00 00:00:00"
+       "completeDate": "0000-00-00 00:00:00"
   }
 ],
 "completed": [
@@ -242,9 +242,9 @@ It will return:
       "id": "2",
       "item": "Learn  PHP",
       "sort": "1",
-      "todoStatu": "2",
+      "todoStatus": "2",
       "addDate": "2018-07-27 14:25:00",
-      "completDate": "2018-09-07 23:20:13"
+      "completeDate": "2018-09-07 23:20:13"
    }
   ]
 }
