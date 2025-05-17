@@ -6,7 +6,7 @@ class Database
     private $host = 'localhost';
     private $db_name = 'todo_db';
     private $username = 'root';
-    private $password = '##548300';
+    private $password = '';
     private $conn;
 
     // DB Connect
